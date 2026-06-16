@@ -28,7 +28,18 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build image
-        run: docker build -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:latest .
+        run: |
+          for i in 1 2 3; do
+            docker build -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:latest . && break
+
+            if [ "$i" -eq 3 ]; then
+              echo "Docker build failed after 3 attempts"
+              exit 1
+            fi
+
+            echo "Docker build failed. Retrying in 20 seconds..."
+            sleep 20
+          done
 
       - name: Push image
         run: |
