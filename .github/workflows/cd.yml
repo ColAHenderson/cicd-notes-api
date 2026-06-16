@@ -49,13 +49,13 @@ jobs:
       - name: Store image output
         id: image
         run: echo "image=$IMAGE_NAME:${{ github.sha }}" >> "$GITHUB_OUTPUT"
+        
+  deploy-staging:
+      name: Deploy to staging
+      runs-on: ubuntu-latest
+      needs: build-and-publish
+      environment: staging
 
-deploy-staging:
-    name: Deploy to staging
-    runs-on: ubuntu-latest
-    needs: build-and-publish
-    environment: staging
-
-    steps:
-      - name: Trigger staging deploy
-        run: curl -X POST "${{ secrets.STAGING_DEPLOY_HOOK }}"
+      steps:
+        - name: Trigger staging deploy
+          run: curl -X POST "${{ secrets.STAGING_DEPLOY_HOOK }}"
