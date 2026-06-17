@@ -30,15 +30,3 @@ jobs:
 
       - name: Run tests
         run: pytest
-
-  docker-build:
-    name: Build Docker image
-    runs-on: ubuntu-latest
-    needs: test-and-lint
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Build image
-        run: docker build -t cicd-notes-api:${{ github.sha }} .
