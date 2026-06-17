@@ -12,7 +12,7 @@ class Note(BaseModel):
 
 @app.get("/")
 def root():
-    return {"message": "CI/CD Notes API"}
+    return {"message": "bad release"}
 
 @app.get("/health")
 def health():
